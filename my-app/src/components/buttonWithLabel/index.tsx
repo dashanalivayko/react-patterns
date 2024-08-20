@@ -1,12 +1,13 @@
 import { Button } from "../button";
 import "./style.scss";
+import {FC} from "react";
+import {ButtonWithLabelProps} from "./types";
 
-export const ButtonWithLabel = ({ onClick, children }: { onClick: () => void, children: string }) => {
-	const text = <p style={{ marginRight: '5px' }}>нажми меня!</p>;
+export const ButtonWithLabel : FC<ButtonWithLabelProps> = ({label, ...restProps}) => {
 	return (
 		<div className="button-with-label">
-			{text}
-			<Button onClick={onClick}>{children}</Button>
+			<p>{label}</p>
+			<Button {...restProps}/>
 		</div>
 	);
 };
