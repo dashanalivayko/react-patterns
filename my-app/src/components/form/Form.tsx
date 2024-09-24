@@ -1,25 +1,28 @@
-import React, { useState, FormEvent, ChangeEvent } from 'react';
+import React, { useState, FormEvent, ChangeEvent, memo } from 'react';
 import './style.scss';
+import { UserProps } from '../memberCard/types';
 
 interface FormProps {
-    onUserAddition: (user: any) => void; // Принимаем функцию для обновления состояния верхнего компонента
+	onUserAddition: (user: UserProps) => void; // Принимаем функцию для обновления состояния верхнего компонента
 }
 
-const Form: React.FC<FormProps> = ({ onUserAddition }) => {
+export const Form: React.FC<FormProps> = memo(({ onUserAddition }) => {
 	const [username, setUsername] = useState<string>('');
 	const [phone, setPhone] = useState<string>('');
 	const [website, setWebsite] = useState<string>('');
 
-	const handleUsernameChange = (event: ChangeEvent<HTMLInputElement>) => {
-		setUsername(event.target.value);
-	};
-
-	const handlePhoneChange = (event: ChangeEvent<HTMLInputElement>) => {
-		setPhone(event.target.value);
-	};
-
-	const handlewebsiteChange = (event: ChangeEvent<HTMLInputElement>) => {
-		setWebsite(event.target.value);
+	const handleFieldUpdate = (event: ChangeEvent<HTMLInputElement>) => {
+		switch (event.target.name) {
+			case "username":
+				setUsername(event.target.value);
+				break;
+			case "phone":
+				setPhone(event.target.value);
+				break;
+			case "website":
+				setWebsite(event.target.value);
+				break;
+		}
 	};
 
 	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -45,24 +48,22 @@ const Form: React.FC<FormProps> = ({ onUserAddition }) => {
 			<div>
 				<label>
 					Username:
-					<input type="text" value={username} onChange={handleUsernameChange} />
+					<input type="text" name="username" value={username} onChange={handleFieldUpdate} />
 				</label>
 			</div>
 			<div>
 				<label>
 					Phone:
-					<input type="text" value={phone} onChange={handlePhoneChange} />
+					<input type="text" name="phone" value={phone} onChange={handleFieldUpdate} />
 				</label>
 			</div>
 			<div>
 				<label>
 					Website:
-					<input type="email" value={website} onChange={handlewebsiteChange} />
+					<input type="email" name="website" value={website} onChange={handleFieldUpdate} />
 				</label>
 			</div>
 			<button className='button' type="submit">Submit</button>
 		</form>
 	);
-};
-
-export default Form;
+});
